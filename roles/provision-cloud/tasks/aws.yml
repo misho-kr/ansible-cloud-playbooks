@@ -1,0 +1,98 @@
+---
+# Provision EC2 instances on AWS
+
+# ---------------------------------------------------------------------
+#  query
+
+- name: query AWS for EC2 instances
+  ec2_remote_facts:
+    filters: "{{ vm_tags | combine(ec2_tags) | vm_tags_2_aws_filters | \
+                  combine({'instance-state-name': aws_ec2_runnable_states })}}"
+    region: "{{ aws_region }}"
+  register: ec2_instances
+
+- set_fact:
+    ec2_count: "{{ ec2_instances.instances | length }}"
+- set_fact:
+    ec2_count_to_create: "{{ vm_count - ec2_count | int }}"
+
+# ---------------------------------------------------------------------
+#  create
+
+- name: launch EC2 instances  (if not enough)
+  ec2:
+    keypair="{{ aws_keypair }}"
+    group="{{ ec2_security_group }}"
+    type="{{ ec2_instance_type }}"
+    image="{{ ec2_image }}"
+    region="{{ aws_region }}"
+    instance_tags="{{ vm_tags | combine(ec2_tags) }}"
+    count="{{ ec2_count_to_create }}"
+    vpc_subnet_id="{{ aws_vpc_subnet }}"
+    wait=true
+  register: ec2_new_instances
+  when: "{{ ec2_count_to_create }} > 0"
+
+- name: Wait for new EC2 instances to come up
+  wait_for: host={{ item[ ec2_new_instance_name_attr ] }}
+            port={{ vm_wait_for_port }}
+            timeout={{ aws_ec2_create_timeout }}
+            state=started
+  with_items: "{{ ec2_new_instances.instances | default() }}"
+  when: "{{ ec2_count_to_create }} > 0"
+
+# ---------------------------------------------------------------------
+#  destroy
+
+- name: terminate EC2 instances (if too many)
+  ec2:
+    instance_ids="{{ [ item.1 ] }}"
+    region="{{ aws_region }}"
+    state=absent
+  with_indexed_items: "{{ ec2_instances.instances | map(attribute='id') | list }}"
+  when: "{{ item.0 }} >= {{ vm_count }}"
+
+# It would be nice to avoid this repeated query, but Ansible does not behave nicely
+# when mixing conditional task execution with registered variables ...
+
+- name: query (again) AWS for EC2 instances
+  ec2_remote_facts:
+    filters: "{{ vm_tags | combine(ec2_tags) | vm_tags_2_aws_filters | \
+                  combine({'instance-state-name': aws_ec2_runnable_states })}}"
+    region: "{{ aws_region }}"
+  register: ec2_instances
+  # when: "{{ ec2_count }} > {{ vm_count }}"
+
+# ---------------------------------------------------------------------
+#  start
+
+- name: start existing EC2 instances
+  ec2:
+    instance_ids="{{ ec2_instances.instances | map(attribute='id') | list }}"
+    region="{{ aws_region }}"
+    state=running
+    wait=true
+  when: "{{ vm_count }} > 0"
+
+- name: Wait for existing EC2 instances to come up
+  wait_for: host={{ item[ ec2_instance_name_attr ] }}
+            port={{ vm_wait_for_port }}
+            timeout={{ aws_ec2_startup_timeout }}
+            state=started
+  with_items: "{{ ec2_instances.instances }}"
+
+# ---------------------------------------------------------------------
+#  inventory
+
+- name: add existing EC2 instances to inventory
+  add_host: name="{{ item[ ec2_instance_name_attr ] }}"
+            groups="{{ cloud_inventory_group }}"
+            ansible_user="{{ ec2_user }}"
+  with_items: "{{ ec2_instances.instances }}"
+
+- name: add new EC2 instances to inventory
+  add_host: name="{{ item[ ec2_new_instance_name_attr ] }}"
+            groups="{{ cloud_inventory_group }}"
+            ansible_user="{{ ec2_user }}"
+  with_items: "{{ ec2_new_instances.instances | default() }}"
+  when: "{{ ec2_count_to_create }} > 0"

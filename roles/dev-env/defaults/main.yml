@@ -1,0 +1,28 @@
+---
+# List fo packages to install on dev machines
+
+# update all installed packages before proceeding to the dev packages
+update_all_packages:    True
+
+dev_packages_by_os:
+  Ubuntu:
+    '14.04':
+      - tbd
+  RHEL:
+  CentOS:
+  Fedora:
+    # source control
+      - git
+      - gitk
+      - git-gui
+    # build_tools
+      - make
+      - patch
+      - bzip2
+    # extra
+      - emacs-nox
+      - zip
+      - unzip
+
+cpp_packages:     "{{ dev_packages_by_os[ ansible_distribution ][ ansible_distribution_version ] |
+             default( dev_packages_by_os[ ansible_distribution ] ) }}"

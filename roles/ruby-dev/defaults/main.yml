@@ -1,0 +1,21 @@
+---
+
+ruby_version:           2.3.1
+rails_version:          4.2.7
+
+phantom_js_name:        phantomjs-1.9.8-linux-x86_64
+
+ruby_dep_packages_by_os:
+  Ubuntu:
+    '14.04':
+      - tbd
+  RHEL:
+  CentOS:
+  Fedora:
+    - openssl-devel
+    - readline-devel
+    - sqlite-devel
+    - zlib-devel
+
+ruby_dep_packages:     "{{ ruby_dep_packages_by_os[ ansible_distribution ][ ansible_distribution_version ] |
+                  default( ruby_dep_packages_by_os[ ansible_distribution ] ) }}"

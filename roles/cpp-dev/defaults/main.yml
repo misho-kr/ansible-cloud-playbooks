@@ -1,0 +1,14 @@
+---
+# Software packages to install for C++ development
+
+cpp_packages_by_os:
+  Ubuntu:
+    '14.04':
+      - tbd
+  RHEL:
+  CentOS:
+  Fedora:
+      - "gcc-c++"
+
+cpp_packages:     "{{ cpp_packages_by_os[ ansible_distribution ][ ansible_distribution_version ] |
+                        default( cpp_packages_by_os[ ansible_distribution ] ) }}"

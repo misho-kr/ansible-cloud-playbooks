@@ -1,0 +1,15 @@
+---
+#  set up emacs
+
+- name: clean up old/stale/unneeded files and folders
+  file: state=absent name={{ item }}
+  with_items:
+    - .emacs.d
+    - .emacs
+    - emacs.d
+
+- name: set up emacs files and libraries
+  synchronize: src=emacs.d dest=.
+
+- name: rename folder with emacs configuration and library files
+  command: mv emacs.d .emacs.d

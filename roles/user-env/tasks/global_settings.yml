@@ -1,0 +1,4 @@
+---
+
+- name: add to global profile folder
+  copy: src=devenv.sh dest=/etc/profile.d/

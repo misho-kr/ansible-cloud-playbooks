@@ -1,0 +1,21 @@
+---
+
+- name: download PhantomJS archive file
+  get_url: url="{{ phantom_js_url }}/{{ phantom_js_name }}.tar.bz2"
+           dest="{{ phantom_js_download_dest }}"
+
+- name: extract PhantomJS archive file
+  become: yes
+  unarchive: src="{{ phantom_js_download_dest }}/{{ phantom_js_name }}.tar.bz2"
+             dest="{{ phantom_js_dest }}"
+             creates="{{ phantom_js_dest }}/{{ phantom_js_name }}/bin/phantomjs"
+             copy=no
+
+- name: install PhantomJS for headless testing
+  become: yes
+  file: src="{{ phantom_js_dest }}/{{ phantom_js_name }}/bin/phantomjs"
+        dest="{{ phantom_js_install_dest }}/phantomjs" state=link
+
+- name: delete downloaded PhantomJS archive file
+  file: name="{{ phantom_js_download_dest }}/{{ phantom_js_name }}.tar.bz2"
+        state=absent

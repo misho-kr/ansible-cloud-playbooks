@@ -1,0 +1,18 @@
+# Editors of all kinds
+*~
+*#
+*.swp
+
+# Ansible runs
+*.retry
+
+.DS_Store
+.project
+.settings
+.classpath
+.pydevproject
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.egg

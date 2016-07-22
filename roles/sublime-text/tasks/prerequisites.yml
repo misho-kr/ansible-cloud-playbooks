@@ -1,0 +1,26 @@
+---
+
+# Most Linux distros in the RedHat family use YUM
+
+- name: install SublimeText required packages (yum)
+  become: yes
+  yum: name="{{ item }}" state=present
+  with_items: "{{ sublime_dep_packages }}"
+  when: ansible_pkg_mgr == "yum"
+
+# Fedora 23 and higher use DNF
+
+- name: install SublimeText required packages (dnf)
+  become: yes
+  dnf: name="{{ item }}" state=present
+  with_items: "{{ sublime_dep_packages }}"
+  when: ansible_pkg_mgr == "dnf"
+
+# for Debian distros
+
+- name: install SublimeText required packages (apt)
+  become: yes
+  apt: name="{{ item }}" state=present
+       update_cache=yes
+  with_items: "{{ sublime_dep_packages }}"
+  when: ansible_pkg_mgr == "apt"

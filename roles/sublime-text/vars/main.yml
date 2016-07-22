@@ -1,0 +1,4 @@
+---
+
+bashrc_addons:
+  - export PATH="${PATH}:{{ sublime_text_dest }}/{{ sublime_text_dir }}"

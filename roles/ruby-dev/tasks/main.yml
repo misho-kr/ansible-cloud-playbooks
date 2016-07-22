@@ -1,0 +1,9 @@
+---
+# Install Ruby, Rails and Ruby env tool
+
+- include: prerequisites.yml
+
+- include: rbenv.yml
+- include: ruby.yml
+- include: rails.yml
+- include: phantom-js.yml

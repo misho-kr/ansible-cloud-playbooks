@@ -1,0 +1,17 @@
+---
+# Cloud provisioning config
+
+# all new VMs will be added to this group
+cloud_inventory_group:      cloud
+
+# Test connection VMs by probing <ssh> port
+vm_wait_for_port:       22
+
+# useful definitions ------------------------------------------
+
+local_homedir:              "{{ lookup('env','HOME') }}"
+remote_homedir:             "{{ ansible_env['HOME'] }}"
+current_dir:                "{{ lookup('env','PWD') }}"
+
+from_cache:                 True
+download_cache_dir:         "{{ current_dir }}/download.cache"

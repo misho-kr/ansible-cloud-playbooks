@@ -1,0 +1,11 @@
+---
+# Install Ruby on Rails ... umm, Rails is probably more correct
+
+- name: install bundler
+  gem: name=bundler state=present
+
+- name: install Rails, this step will take a ~5min to complete (as it warns)
+  gem: name=rails version="{{ rails_version }}" state=present
+
+- name: install shims for newly installed Ruby gems that provide commands
+  command: rbenv rehash

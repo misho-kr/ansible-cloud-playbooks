@@ -1,0 +1,18 @@
+---
+
+- name: clone the rbenv git repo into ~/.rbenv
+  git: repo={{ rbenv_repo }}
+       dest="{{ ansible_user_dir }}/.rbenv"
+       accept_hostkey=yes
+
+- name: add the install command to rbenv
+  git: repo={{ rbenv_install_repo }}
+       dest="{{ ansible_user_dir }}/.rbenv/plugins/ruby-build"
+       accept_hostkey=yes
+
+- name: update bashrc file (rbenv)
+  lineinfile: dest="{{ ansible_user_dir }}/.bashrc"
+              line="{{ item }}"
+              state=present
+              insertafter=EOF
+  with_items: "{{ bashrc_addons }}"

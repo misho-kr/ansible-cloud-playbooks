@@ -1,0 +1,124 @@
+;; -*- Mode: Emacs-Lisp -*-
+;; -*- lisp -*-
+;---------------------------------------------------------------------
+; .emacs file composed with help from various sources by
+; Michael Krastev <mkrastev@paypal.com>
+;---------------------------------------------------------------------
+
+;; Switches between source/header files
+(defun toggle-source-header()
+  "Switches to the source buffer if currently in the header buffer and vice versa."
+  (interactive)
+  (let ((buf (current-buffer))
+        (name (file-name-nondirectory (buffer-file-name)))
+        file
+        offs)
+    (setq offs (string-match c++-header-ext-regexp name))
+    (if offs
+        (let ((lst c++-source-extension-list)
+              (ok nil)
+              ext)
+          (setq file (substring name 0 offs))
+          (while (and lst (not ok))
+            (setq ext (car lst))
+            (if (file-exists-p (concat file "." ext))
+                  (setq ok t))
+            (setq lst (cdr lst)))
+          (if ok
+              (find-file (concat file "." ext))))
+      (let ()
+        (setq offs (string-match c++-source-ext-regexp name))
+        (if offs
+            (let ((lst c++-header-extension-list)
+                  (ok nil)
+                  ext)
+              (setq file (substring name 0 offs))
+              (while (and lst (not ok))
+                (setq ext (car lst))
+                (if (file-exists-p (concat file "." ext))
+                    (setq ok t))
+                (setq lst (cdr lst)))
+              (if ok
+                  (find-file (concat file "." ext)))))))))
+
+(global-set-key [(control =)] 'toggle-source-header)
+
+;; Will make sure that the #ifndef and #define that should be present in all c/c++ headers
+;; are corrected according their filename.
+(defun correct-c-header-define( buf )
+  (interactive "b")
+  (save-excursion
+    (set-buffer buf)
+    (if (string-match c++-header-ext-regexp (buffer-name))
+        (let ((bufname (buffer-name))
+              defname
+              defstring)
+          (setq defname (concat (upcase (file-name-sans-extension bufname)) "_"
+                                (upcase (file-name-extension bufname))))
+          (setq defstring (concat
+                           "#ifndef " defname "\n"
+                           "#define " defname "\n"))
+          (beginning-of-buffer)
+          (if (search-forward-regexp (concat "^#ifndef[ \t]+\\([a-zA-Z_][a-zA-Z0-9_]*\\)[ \t]*[\n]"
+                                             "#define[ \t]+\\([a-zA-Z_][a-zA-Z0-9_]*\\)[ \t]*[\n]")
+                                     nil t)
+;;              (if (string-equal (match-string 1) (match-string 2))
+              (replace-match defstring t t ))))))
+
+;; Will align c/c++ variable declarations in the selected region
+;; Example:
+;; int a;
+;; const QString b;
+;; static unsigned int c;
+;;
+;; will become:
+;; int                 a;
+;; const QString       b;
+;; static unsigned int c;
+(defun align-vars(beg end)
+  "Aligns c/c++ variable declaration names on the same column, with beginning and end taken from selected region."
+  (interactive "r")
+  (save-excursion
+    (let (bol eol expr-end
+          (max-col 0) col
+          poslist curpos)
+      (goto-char end)
+      (if (not (bolp))
+          (setq end (line-end-position)))
+      (goto-char beg)
+      (while (and (> end (point)) (not (eobp)))
+        (setq bol (line-beginning-position))
+        (setq eol (line-end-position))
+        (beginning-of-line)
+        (setq expr-end (point))
+        (if (search-forward-regexp "^[^/][^/]\\([a-zA-Z][a-zA-Z]*\\)[ \t]+[^;]" eol t)
+            (let ()
+              (setq expr-end (match-end 1))
+              (while (search-forward-regexp "\\([a-zA-Z][a-zA-Z]*\\)[ \t]+[^;]" eol t)
+                (setq expr-end (match-end 1)))
+              (goto-char expr-end)
+              (setq col (current-column))
+              (if (search-forward-regexp (concat "\\(\\*\\|&[ \t]*\\)?"
+                                                 "\\([a-zA-Z\\_][a-zA-Z0-9\\_]*\\)\\([\[][0-9]+[\]]\\)?"
+                                                 "\\([ \t]*,[ \t]*\\([a-zA-Z\\_][a-zA-Z0-9\\_]*\\)\\([\[][0-9]+[\]]\\)?\\)*"
+                                                 "[ \t]*;$") eol t)
+                  (let ((name-col-end 0))
+                    (if (eq (match-beginning 2) (match-beginning 0))
+                        (setq name-col-end 1))
+                    (setq poslist (cons (list expr-end col (match-beginning 0) name-col-end) poslist))
+                    (if (> col max-col)
+                        (setq max-col col))
+                    (beginning-of-next-line))
+                (beginning-of-next-line)))
+          (beginning-of-next-line)))
+      (setq curpos poslist)
+      (while curpos
+        (let* ((pos (car curpos))
+               (col (car (cdr pos)))
+               (col-end (car (cdr (cdr pos))))
+               (col-end-name (car (cdr (cdr (cdr pos)))))
+               (abs-pos (car pos)))
+          (goto-char abs-pos)
+          (delete-region abs-pos col-end)
+          (insert-string (make-string (+ (+ (- max-col col) 1) col-end-name) 32)))
+        (setq curpos (cdr curpos))))))

@@ -1,0 +1,36 @@
+# ---------------------------------------------------------------------
+#  Cloud-based virtual machines for software development
+# ---------------------------------------------------------------------
+
+[all:children]
+{{ cloud }}
+
+# ---------------------------------------------------------------------
+#  All virtual machines
+# ---------------------------------------------------------------------
+
+[{{ cloud }}]
+{% if vm_count > 0 %}
+{% for host in groups[ 'cloud' ] %}
+{{ host }}   ansible_user={{ hostvars[ host ][ 'ansible_user' ] }}
+{% endfor %}
+{% endif %}
+
+[{{ cloud }}:vars]
+cloud = {{ cloud }}
+count = {{ vm_count }}
+#
+# User defined virtual manchine tags
+#
+{% for tag in vm_tags %}
+{{ tag }}="{{ vm_tags[ tag ] }}"
+{% endfor %}
+
+# alias ---------------------------------------------------------------
+
+[cloud:children]
+{{ cloud }}
+
+# ---------------------------------------------------------------------
+# eof
+#

@@ -1,0 +1,7 @@
+---
+# profile settings, configuration files and more
+
+- include: user_settings.yml
+
+- include: global_settings.yml
+  become:  yes

@@ -1,0 +1,14 @@
+---
+# Provision Virtul Machine(s) with chosen cloud provider
+
+- include_vars: "vars/{{ cloud | default('nocloud') }}.yml"
+
+# cloud-specific tasks to provision VMs -----------------------
+
+- include: aws.yml
+  when: cloud == "aws"
+
+# Common tasks ------------------------------------------------
+
+- name: generate inventory file with all cloud virtual machines
+  template: src="hosts.j2" dest="{{ current_dir }}/hosts.{{ cloud }}"

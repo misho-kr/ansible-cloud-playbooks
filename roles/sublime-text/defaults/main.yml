@@ -1,0 +1,20 @@
+---
+
+sublime_text_url:               http://c758482.r82.cf2.rackcdn.com
+sublime_text_name:              "Sublime%20Text%202.0.2%20x64"
+sublime_text_dest:              /usr/local
+sublime_text_extract_dir:       "Sublime\ Text\ 2"
+sublime_text_dir:               SublimeText2
+sublime_text_download_dest:     /tmp
+
+sublime_dep_packages_by_os:
+  Ubuntu:
+    '14.04':
+      - tbd
+  RHEL:
+  CentOS:
+  Fedora:
+      - gtk3
+
+sublime_dep_packages:     "{{ sublime_dep_packages_by_os[ ansible_distribution ][ ansible_distribution_version ] |
+                     default( sublime_dep_packages_by_os[ ansible_distribution ] ) }}"

@@ -1,0 +1,15 @@
+
+rbenv_repo:                 https://github.com/rbenv/rbenv.git
+rbenv_install_repo:         https://github.com/rbenv/ruby-build.git
+
+bashrc_addons:
+  - export RECIPEPUPPY_HOSTPORT=www.recipepuppy.com:80
+  - export PATH="${HOME}/.rbenv/bin:$PATH"
+  - export PATH="${HOME}/.rbenv/plugins/ruby-build/bin:$PATH"
+  - eval "$(rbenv init -)"
+
+phantom_js_url:             https://bitbucket.org/ariya/phantomjs/downloads
+
+phantom_js_dest:            /usr/local/share
+phantom_js_install_dest:    /usr/local/bin
+phantom_js_download_dest:   /tmp

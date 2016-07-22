@@ -1,0 +1,43 @@
+---
+# Install SublimeText
+
+# pre-condition ------------------------------------------------------
+
+- include: prerequisites.yml
+
+# installation -------------------------------------------------------
+
+- name: download SublimeText
+  get_url: url="{{ sublime_text_url }}/{{ sublime_text_name }}.tar.bz2"
+           dest={{ sublime_text_download_dest }}
+
+- name: extract SublimeText archive file
+  become: yes
+  unarchive: src="{{ sublime_text_download_dest }}/{{ sublime_text_name }}.tar.bz2"
+             dest={{ sublime_text_dest }}
+             creates="{{ sublime_text_dest }}/{{ sublime_text_extract_dir }}"
+             owner=root group=root
+             copy=no
+
+- name: remove stale SublimeText directory (only of the directory will have to be renamed)
+  become: yes
+  file: path="{{ sublime_text_dest }}/{{ sublime_text_dir }}" state=absent
+  when: sublime_text_extract_dir != sublime_text_dir
+
+- name: rename SublimeText directory (to avoid complications with paths that contain spaces)
+  become: yes
+  command: mv "{{ sublime_text_dest }}/{{ sublime_text_extract_dir }}" "{{ sublime_text_dest }}/{{ sublime_text_dir }}"
+  when: sublime_text_extract_dir != sublime_text_dir
+
+- name: update bashrc file (SublimeText2)
+  lineinfile: dest="{{ ansible_user_dir }}/.bashrc" line="{{ item }}"
+              state=present insertafter=EOF
+  with_items: "{{ bashrc_addons }}"
+
+- name: delete downloaded SublimeText archive file
+  file: path="{{ sublime_text_download_dest }}/{{ sublime_text_name }}.tar.bz2"
+        state=absent
+
+- name: create Gnome launcher
+  become: yes
+  copy: src=sublime2.desktop dest="/usr/share/applications/"

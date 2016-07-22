@@ -1,0 +1,44 @@
+---
+# ---------------------------------------------------------------------
+#  Provision Virtual Machine and deploy required software
+# ---------------------------------------------------------------------
+
+- hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    cloud:      aws
+    vm_count:   1
+    vm_tags:
+        name:           "Development machine"
+        purpose:        "Work on home assignments"
+        provisioner:    "Ansible"
+
+  roles:
+    - provision-cloud
+
+# ---------------------------------------------------------------------
+#  Optional: make sure Python 2 is available on the Virtual Machines
+# ---------------------------------------------------------------------
+
+- hosts: cloud
+  gather_facts: false
+  roles:
+    - min-install
+
+# ---------------------------------------------------------------------
+#  Test connectivity to Virtual Machines
+# ---------------------------------------------------------------------
+
+- hosts: cloud
+  tasks:
+    - ping:
+
+# ---------------------------------------------------------------------
+#  Deploy software to Virtual Machines ... TBC
+# ---------------------------------------------------------------------
+
+# ---------------------------------------------------------------------
+# eof
+#

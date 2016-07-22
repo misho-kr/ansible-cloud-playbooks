@@ -1,0 +1,14 @@
+---
+# Install Ruby
+
+- name: install a Ruby version (could be others)
+  command: rbenv install -v {{ ruby_version }}
+
+- name: set the global version of Ruby to use
+  command: rbenv global {{ ruby_version }}
+
+- name: gems should not generate local documentation (and eat space and time)
+  lineinfile: dest="{{ ansible_user_dir }}/.gemrc"
+              line="gem{{':'}} --no-document"
+              state=present
+              create=yes

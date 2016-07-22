@@ -1,0 +1,8 @@
+---
+
+fedora_release_file:        /etc/fedora-release
+fedora_version_uses_dnf:    23
+
+min_packages:
+  fedora_dnf:           [ "python", "python2-dnf", "yum-utils", "libselinux-python" ]
+  fedora_yum:           [ "python", "yum-utils", "libselinux-python" ]
