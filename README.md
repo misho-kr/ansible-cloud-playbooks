@@ -27,10 +27,6 @@ There are multiple Ansible playbooks in this repository:
 ```bash
 $ ansible-playbook cloud.yml
 
- [WARNING]: Host file not found: /etc/ansible/hosts
-
- [WARNING]: provided hosts list is empty, only localhost is available
-
 PLAY [localhost] ***************************************************************
 
 TASK [provision-cloud : include_vars] ******************************************
