@@ -1,10 +1,16 @@
+# avoid Ansible inventory files
+hosts.aws
+hosts.gce
+
 # Editors of all kinds
+#
 *~
 *#
 *.swp
 
 # Ansible runs
 *.retry
+download.cache
 
 .DS_Store
 .project

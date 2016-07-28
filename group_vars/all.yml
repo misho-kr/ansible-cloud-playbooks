@@ -5,7 +5,7 @@
 cloud_inventory_group:      cloud
 
 # Test connection VMs by probing <ssh> port
-vm_wait_for_port:       22
+vm_wait_for_port:           22
 
 # useful definitions ------------------------------------------
 

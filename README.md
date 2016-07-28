@@ -3,7 +3,7 @@ Virtual Machines in the cloud
 
 [Ansible playbooks](https://docs.ansible.com/playbooks.html) to automate the creation of virtual machines on public clouds.
 
-No need for vendor-specific user interfaces or multiple command-line tools. Define the cloud provider and desired virtual machines, and fire away. Plenty of customization options are available when needed.
+No need for vendor-specific UIs or multiple command-line tools. Define the cloud provider, set desired virtual machines, and run the playbook. Plenty of customization options.
 
 Supported cloud providers: [aws](https://aws.amazon.com), [gce](https://cloud.google.com) (work in progress)
 

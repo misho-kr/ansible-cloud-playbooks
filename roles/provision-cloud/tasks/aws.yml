@@ -13,8 +13,12 @@
 
 - set_fact:
     ec2_count: "{{ ec2_instances.instances | length }}"
+
+# when vm_count is passed from the command line its type string, not int
+# so this type conversion is required however awkward
+
 - set_fact:
-    ec2_count_to_create: "{{ vm_count - ec2_count | int }}"
+    ec2_count_to_create: "{{ vm_count|int - ec2_count|int }}"
 
 # ---------------------------------------------------------------------
 #  create
@@ -50,7 +54,7 @@
     region="{{ aws_region }}"
     state=absent
   with_indexed_items: "{{ ec2_instances.instances | map(attribute='id') | list }}"
-  when: "{{ item.0 }} >= {{ vm_count }}"
+  when: "{{ item.0 }} >= {{ vm_count|int }}"
 
 # It would be nice to avoid this repeated query, but Ansible does not behave nicely
 # when mixing conditional task execution with registered variables ...
@@ -61,7 +65,7 @@
                   combine({'instance-state-name': aws_ec2_runnable_states })}}"
     region: "{{ aws_region }}"
   register: ec2_instances
-  # when: "{{ ec2_count }} > {{ vm_count }}"
+  # when: "{{ ec2_count }} > {{ vm_count|int }}"
 
 # ---------------------------------------------------------------------
 #  start
@@ -72,7 +76,7 @@
     region="{{ aws_region }}"
     state=running
     wait=true
-  when: "{{ vm_count }} > 0"
+  when: "{{ vm_count|int }} > 0"
 
 - name: Wait for existing EC2 instances to come up
   wait_for: host={{ item[ ec2_instance_name_attr ] }}

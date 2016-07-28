@@ -16,7 +16,7 @@
         provisioner:    "Ansible"
 
   roles:
-    - provision-cloud
+    - { role: provision-cloud,  tags: "vm" }
 
 # ---------------------------------------------------------------------
 #  Optional: make sure Python 2 is available on the Virtual Machines
@@ -25,7 +25,7 @@
 - hosts: cloud
   gather_facts: false
   roles:
-    - min-install
+    - { role: min-install,      tags: "min-install" }
 
 # ---------------------------------------------------------------------
 #  Deploy software to Virtual Machines
@@ -34,9 +34,9 @@
 - hosts: cloud
   roles:
 
-    - { role: sublime-text,   when: install == "sublime" }
-    - { role: cpp-dev,        when: install == "cpp"     }
-    - { role: ruby-dev,       when: install == "ruby"    }
+    - { role: sublime-text,     when: install == "sublime" }
+    - { role: cpp-dev,          when: install == "cpp"     }
+    - { role: ruby-dev,         when: install == "ruby"    }
 
 # ---------------------------------------------------------------------
 # eof

@@ -16,7 +16,7 @@
         provisioner:    "Ansible"
 
   roles:
-    - provision-cloud
+    - { role: provision-cloud,  tags: "vm" }
 
 # ---------------------------------------------------------------------
 #  Optional: make sure Python 2 is available on the Virtual Machines
@@ -25,7 +25,7 @@
 - hosts: cloud
   gather_facts: false
   roles:
-    - min-install
+    - { role: min-install,      tags: "min-install" }
 
 # ---------------------------------------------------------------------
 #  Test connectivity to Virtual Machines
@@ -34,6 +34,7 @@
 - hosts: cloud
   tasks:
     - ping:
+      tags: ping
 
 # ---------------------------------------------------------------------
 #  Deploy software to Virtual Machines ... TBC

@@ -3,22 +3,22 @@
 # ---------------------------------------------------------------------
 
 [all:children]
-{{ cloud }}
+{{ cloud_inventory_group }}
 
 # ---------------------------------------------------------------------
 #  All virtual machines
 # ---------------------------------------------------------------------
 
-[{{ cloud }}]
-{% if vm_count > 0 %}
-{% for host in groups[ 'cloud' ] %}
+[{{ cloud_inventory_group }}]
+{% if vm_count|int > 0 %}
+{% for host in groups[ cloud_inventory_group ] %}
 {{ host }}   ansible_user={{ hostvars[ host ][ 'ansible_user' ] }}
 {% endfor %}
 {% endif %}
 
-[{{ cloud }}:vars]
+[{{ cloud_inventory_group }}:vars]
 cloud = {{ cloud }}
-count = {{ vm_count }}
+count = {{ vm_count|int }}
 #
 # User defined virtual manchine tags
 #
@@ -29,7 +29,7 @@ count = {{ vm_count }}
 # alias ---------------------------------------------------------------
 
 [cloud:children]
-{{ cloud }}
+{{ cloud_inventory_group }}
 
 # ---------------------------------------------------------------------
 # eof
