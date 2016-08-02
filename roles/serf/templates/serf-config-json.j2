@@ -1,0 +1,16 @@
+{
+  "node_name":              "serf@{{ ansible_fqdn }}",
+  "log_level":              "{{ serf_log_level }}",
+  "leave_on_terminate":     true,
+  "start_join":             [
+{% for host in groups[ 'serf' ] %}
+{% if ansible_host != host %}
+     "{{ host }}",
+{% endif %}
+{% endfor %}
+    "{{ ansible_host }}"
+  ],
+  "tags": {
+    "cluster": "{{ cluster_name }}"
+  }
+}

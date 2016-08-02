@@ -1,0 +1,22 @@
+---
+
+service_name:       "serf"
+install_dir:        "/usr/local/bin"
+serf_log_level:     "info"
+
+cluster_name:       "ansible"
+
+package_url:        "https://releases.hashicorp.com/serf/0.7.0/serf_0.7.0_linux_amd64.zip"
+
+# required minimal set of tools (in the future it may expand)
+required_packages_by_os:
+  Ubuntu:
+    '14.04':
+      - tbd
+  RHEL:
+  CentOS:
+  Fedora:
+    - unzip
+
+required_packages:     "{{ required_packages_by_os[ ansible_distribution ][ ansible_distribution_version ] |
+                  default( required_packages_by_os[ ansible_distribution ] ) }}"

@@ -1,0 +1,45 @@
+---
+# Install and set up Serf
+
+# -------------------------------------------------------------
+#  Download
+# -------------------------------------------------------------
+
+- name: create cache folder
+  local_action: file
+                name="{{ download_cache_dir }}"
+                state=directory
+
+- name: download and cache Serf distribution file
+  run_once: true
+  local_action: get_url
+                url="{{ package_url }}"
+                dest="{{ download_cache_dir }}"
+
+- name: get filename of Serf distribution file
+  set_fact:
+    serf_packafe_file: "{{ package_url | basename }}"
+
+# -------------------------------------------------------------
+#  Install
+# -------------------------------------------------------------
+
+# package(s) required to unarchive the distribution file
+
+- include: prerequisites.yml
+
+- name: install Serf from archive file
+  become: yes
+  unarchive: src="{{ download_cache_dir }}/{{ serf_packafe_file }}"
+             dest="{{ install_dir }}"
+             creates="{{ install_dir }}/serf"
+             keep_newer=True
+  notify:
+    - restart service
+
+# -------------------------------------------------------------
+#  Create service
+# -------------------------------------------------------------
+
+- include: service_systemd.yml
+  when: ansible_service_mgr == "systemd"

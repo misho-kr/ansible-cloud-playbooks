@@ -1,0 +1,13 @@
+---
+
+- name: reload systemd
+  become: yes
+  command: /usr/bin/systemctl --system daemon-reload
+
+- name: enable {{ service_name }} service
+  become: yes
+  service: name={{ service_name }} enabled=yes
+
+- name: restart {{ service_name }} service
+  become: yes
+  service: name={{ service_name }} state=restarted

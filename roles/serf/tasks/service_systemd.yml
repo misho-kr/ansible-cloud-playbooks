@@ -1,0 +1,28 @@
+---
+# Dep-loy systemd service
+
+- name: install service configuration file
+  become: yes
+  template: src="{{ service_name }}-config.j2"
+            dest="/etc/sysconfig/{{ service_name }}"
+            owner=root group=root mode="u=rw,g=r,o=r"
+  notify:
+    - restart {{ service_name }} service
+
+- name: install service configuration file (json)
+  become: yes
+  template: src="{{ service_name }}-config-json.j2"
+            dest="/etc/sysconfig/{{ service_name }}.json"
+            owner=root group=root mode="u=rw,g=r,o=r"
+  notify:
+    - restart {{ service_name }} service
+
+- name: install service management file
+  become: yes
+  template: src="{{ service_name }}-service.j2"
+            dest="/lib/systemd/system/{{ service_name }}.service"
+            owner=root group=root mode="u=rw,g=r,o=r"
+  notify:
+    - reload systemd
+    - enable {{ service_name }} service
+    - restart {{ service_name }} service
