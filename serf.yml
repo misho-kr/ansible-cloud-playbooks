@@ -11,8 +11,8 @@
     cloud:      aws
     vm_count:   3
     vm_tags:
-        name:           "Development machine"
-        purpose:        "Work on home assignments"
+        name:           "Serf cluster"
+        purpose:        "Experiment with serf"
         provisioner:    "Ansible"
 
     cloud_inventory_group:      serf

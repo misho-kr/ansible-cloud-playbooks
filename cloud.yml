@@ -11,8 +11,6 @@
     cloud:      aws
     vm_count:   1
     vm_tags:
-        name:           "Development machine"
-        purpose:        "Work on home assignments"
         provisioner:    "Ansible"
 
   roles:
