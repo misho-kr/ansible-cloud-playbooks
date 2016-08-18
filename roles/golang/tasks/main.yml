@@ -1,0 +1,7 @@
+---
+
+- include: install_download.yml
+  when: "{{ golang_install_from != 'repo' }}"
+
+- include: install_repo.yml
+  when: "{{ golang_install_from == 'repo' }}"

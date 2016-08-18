@@ -63,4 +63,4 @@ Provisioning cloud infrastructure requires credentials to be passed to the playb
 
 ### Limitation
 
-You can not create VMs on multiple could providers in the same playbook execution. But you can run the playbook multiple times, each time with different __cloud__ parameter.
+You can not create VMs on multiple could providers in the same playbook execution. Butou can run the playbook multiple times, each time with different __cloud__ parameter.

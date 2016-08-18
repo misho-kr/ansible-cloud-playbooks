@@ -1,0 +1,44 @@
+---
+
+# -------------------------------------------------------------
+#  Download
+# -------------------------------------------------------------
+
+- name: create cache folder
+  local_action: file
+                name="{{ download_cache_dir }}"
+                state=directory
+
+- name: download and cache Golang distribution file
+  run_once: true
+  local_action: get_url
+                url="{{ golang_package_url }}"
+                dest="{{ download_cache_dir }}"
+
+- name: get filename of Golang distribution file
+  set_fact:
+    golang_packafe_file: "{{ golang_package_url | basename }}"
+
+# -------------------------------------------------------------
+#  Install
+# -------------------------------------------------------------
+
+# package(s) required to unarchive the distribution file
+
+- include: prerequisites.yml
+
+- name: install Golang from distribution file
+  become: yes
+  unarchive: src="{{ download_cache_dir }}/{{ golang_packafe_file }}"
+             dest="{{ golang_install_dir }}"
+             creates="{{ golang_install_dir }}/go"
+             keep_newer=True
+
+# env setup -----------------------------------------------
+
+- name: update bashrc file (golang)
+  lineinfile: dest="{{ ansible_user_dir }}/.bashrc"
+              line="{{ item }}"
+              state=present
+              insertafter=EOF
+  with_items: "{{ bashrc_addons + bashrc_addons_go_install_dir }}"

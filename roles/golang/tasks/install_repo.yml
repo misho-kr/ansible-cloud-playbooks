@@ -1,0 +1,42 @@
+---
+
+# Most Linux distros in the RedHat family use YUM
+
+- name: install packages for Go development (yum)
+  become: yes
+  yum: name="{{ item }}" state=present
+  with_items: "{{ golang_packages }}"
+  when: ansible_pkg_mgr == "yum"
+
+# Fedora 23 and higher use DNF
+
+- name: install packages for Go development (dnf)
+  become: yes
+  dnf: name="{{ item }}" state=present
+  with_items: "{{ golang_packages }}"
+  when: ansible_pkg_mgr == "dnf"
+
+# for Debian distros
+
+- debug: msg="adding repo = {{ golang_repo }}"
+
+- name: add debian repository
+  become: yes
+  apt_repository: repo="{{ golang_repo }}" state=present
+  when: "{{ golang_repo != '' }}"
+
+- name: install packages for Go development (apt)
+  become: yes
+  apt: name="{{ item }}" state=present
+       update_cache=yes
+  with_items: "{{ golang_packages }}"
+  when: ansible_pkg_mgr == "apt"
+
+# env setup -----------------------------------------------
+
+- name: update bashrc file (golang)
+  lineinfile: dest="{{ ansible_user_dir }}/.bashrc"
+              line="{{ item }}"
+              state=present
+              insertafter=EOF
+  with_items: "{{ bashrc_addons }}"

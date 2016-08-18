@@ -1,0 +1,51 @@
+---
+# Software packages to install for Go development
+
+golang_install_from:        "repo"
+
+# 1) when installing from tarball
+golang_package_url:         "https://storage.googleapis.com/golang/go1.7.linux-amd64.tar.gz"
+golang_install_dir:         "/usr/local"
+
+# 2) when installing from repo
+
+golang_packages_by_os:
+  Ubuntu:
+    '14.04':
+      - golang
+  RHEL:
+  CentOS:
+  Fedora:
+      - golang
+
+golang_packages:     "{{ golang_packages_by_os[ ansible_distribution ][ ansible_distribution_version ] |
+                default( golang_packages_by_os[ ansible_distribution ][ 'default '] ) |
+                default( golang_packages_by_os[ ansible_distribution ] ) |
+                default( [] ) }}"
+
+# 2B) when installing from custom repo
+golang_repo_by_os:
+  Ubuntu:
+    'default':      "ppa:ubuntu-lxc/lxd-stable"
+  RHEL:
+  CentOS:
+  Fedora:
+
+golang_repo:       "{{ golang_repo_by_os[ ansible_distribution ][ ansible_distribution_version ] |
+              default( golang_repo_by_os[ ansible_distribution ][ 'default' ] ) |
+              default( golang_repo_by_os[ ansible_distribution ] ) |
+              default( '' ) }}"
+
+# required minimal set of tools (in the future it may expand)
+required_packages_by_os:
+  Ubuntu:
+    - unzip
+  RHEL:
+  CentOS:
+  Fedora:
+    - unzip
+
+required_packages:     "{{ required_packages_by_os[ ansible_distribution ][ ansible_distribution_version ] |
+                  default( required_packages_by_os[ ansible_distribution ][ 'default' ] ) |
+                  default( required_packages_by_os[ ansible_distribution ] ) |
+                  default( [] ) }}"

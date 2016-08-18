@@ -31,7 +31,7 @@ $ ansible-playbook dev-machine.yml -e install=cpp
 * Install SublimeText on that virtual machine
 
 ```bash
-$ ansible-playbook -i dev.aws dev-machine.yml -e install=sublime
+$ ansible-playbook -i dev.aws -l dev dev-machine.yml -e install=sublime
 
 ```
 
@@ -50,6 +50,7 @@ See the __install__ variable (see the example above) to one of the below values 
 * __sublime__ -- download and install [SublimeText 2](https://www.sublimetext.com)
 * __cpp-dev__ -- install g++ compiler
 * __ruby-dev__ -- install [Ruby On Rails](http://rubyonrails.org)
+* __go__ -- install [Golang](https://golang.org)
 
 ### Playbook variables
 

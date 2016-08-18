@@ -36,9 +36,12 @@
 - hosts: dev
   roles:
 
+    - user-env
+    - dev-env
     - { role: sublime-text,     when: install == "sublime" }
     - { role: cpp-dev,          when: install == "cpp"     }
     - { role: ruby-dev,         when: install == "ruby"    }
+    - { role: golang,           when: install == "go"      }
 
 # ---------------------------------------------------------------------
 # eof
