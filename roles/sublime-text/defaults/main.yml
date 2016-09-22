@@ -9,12 +9,13 @@ sublime_text_download_dest:     /tmp
 
 sublime_dep_packages_by_os:
   Ubuntu:
-    '14.04':
-      - tbd
+    # '14.04':
+    'default':
+        - libgtk2.0-0
   RHEL:
   CentOS:
   Fedora:
       - gtk3
+  all:              []
 
-sublime_dep_packages:     "{{ sublime_dep_packages_by_os[ ansible_distribution ][ ansible_distribution_version ] |
-                     default( sublime_dep_packages_by_os[ ansible_distribution ] ) }}"
+sublime_dep_packages:     "{{ lookup('by_dist', 'sublime_dep_packages') }}"

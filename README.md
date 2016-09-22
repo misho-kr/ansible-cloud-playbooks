@@ -1,13 +1,15 @@
-Virtual Machines in the cloud
-=============================
+Create virtual machines in the clouds with [Ansible](https://docs.ansible.com/playbooks.html)
+=============================================================================================
 
-[Ansible playbooks](https://docs.ansible.com/playbooks.html) to automate the creation of virtual machines on public clouds.
+No need for provider-specific UIs or command-line tools:
 
-No need for vendor-specific UIs or multiple command-line tools. Define the cloud provider, set desired virtual machines, and run the playbook. Plenty of customization options.
+1. Use one of the ready-to-use playbooks or create new one from template
+1. Set the cloud provider and desired number of virtual machines (otional)
+1. Run the playbook
 
-Supported cloud providers: [aws](https://aws.amazon.com), [gce](https://cloud.google.com) (work in progress)
+Plenty of customization options. Supported cloud providers: [aws](https://aws.amazon.com), [gce](https://cloud.google.com) (work in progress).
 
-There are other solutions to do that, like [Teraform](https://www.terraform.io). This is my experiment, implemented with [Ansible cloud modules](http://docs.ansible.com/ansible/list_of_cloud_modules.html).
+There are other cloud provisioning solutions, like [Teraform](https://www.terraform.io). This is my experiment with [Ansible cloud modules](http://docs.ansible.com/ansible/list_of_cloud_modules.html).
 
 ## Ansible playbooks
 
@@ -18,7 +20,7 @@ There are other solutions to do that, like [Teraform](https://www.terraform.io).
 ### Playbook execution
 
 ```bash
-$ ansible-playbook cloud.yml -e vm_count=1
+$ ansible-playbook cloud.yml
 
 PLAY [localhost] ***************************************************************
 
@@ -39,6 +41,10 @@ Optional arguments -- defined in the __vars__ section of the playbook, or passed
 
 * __cloud__ -- cloud provider to use, initially only _aws_ is supported
 * __vm_count__ -- number of VMs to create
+
+```bash
+$ ansible-playbook cloud.yml -e vm_count=3 -e cloud=gce"
+```
 
 ### Playbook actions
 
@@ -63,4 +69,4 @@ Provisioning cloud infrastructure requires credentials to be passed to the playb
 
 ### Limitation
 
-You can not create VMs on multiple could providers in the same playbook execution. Butou can run the playbook multiple times, each time with different __cloud__ parameter.
+You can not create VMs on multiple could providers in the same playbook execution. But you can run the playbook multiple times, each time with different __cloud__ parameter.

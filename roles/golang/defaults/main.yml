@@ -11,30 +11,24 @@ golang_install_dir:         "/usr/local"
 
 golang_packages_by_os:
   Ubuntu:
-    '14.04':
       - golang
   RHEL:
   CentOS:
   Fedora:
       - golang
 
-golang_packages:     "{{ golang_packages_by_os[ ansible_distribution ][ ansible_distribution_version ] |
-                default( golang_packages_by_os[ ansible_distribution ][ 'default '] ) |
-                default( golang_packages_by_os[ ansible_distribution ] ) |
-                default( [] ) }}"
+golang_packages:  "{{ lookup('by_dist', 'golang_packages') }}"
 
 # 2B) when installing from custom repo
 golang_repo_by_os:
   Ubuntu:
-    'default':      "ppa:ubuntu-lxc/lxd-stable"
+    '14.04':      "ppa:ubuntu-lxc/lxd-stable"
+    'default':
   RHEL:
   CentOS:
   Fedora:
 
-golang_repo:       "{{ golang_repo_by_os[ ansible_distribution ][ ansible_distribution_version ] |
-              default( golang_repo_by_os[ ansible_distribution ][ 'default' ] ) |
-              default( golang_repo_by_os[ ansible_distribution ] ) |
-              default( '' ) }}"
+golang_repo:      "{{ lookup('by_dist', 'golang_repo') }}"
 
 # required minimal set of tools (in the future it may expand)
 required_packages_by_os:
@@ -45,7 +39,4 @@ required_packages_by_os:
   Fedora:
     - unzip
 
-required_packages:     "{{ required_packages_by_os[ ansible_distribution ][ ansible_distribution_version ] |
-                  default( required_packages_by_os[ ansible_distribution ][ 'default' ] ) |
-                  default( required_packages_by_os[ ansible_distribution ] ) |
-                  default( [] ) }}"
+required_packages:  "{{ lookup('by_dist', 'required_packages') }}"

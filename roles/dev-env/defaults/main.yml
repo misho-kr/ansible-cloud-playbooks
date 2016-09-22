@@ -7,22 +7,29 @@ update_all_packages:    True
 dev_packages_by_os:
   Ubuntu:
     '14.04':
-      - tbd
+        # source control
+        # build_tools
+        # extra
+        - emacs24-nox
   RHEL:
   CentOS:
   Fedora:
+    # source control
+    # build_tools
+      - patch
+      - bzip2
+    # extra
+      - emacs-nox
+  all:
     # source control
       - git
       - gitk
       - git-gui
     # build_tools
       - make
-      - patch
-      - bzip2
     # extra
-      - emacs-nox
       - zip
       - unzip
 
-cpp_packages:     "{{ dev_packages_by_os[ ansible_distribution ][ ansible_distribution_version ] |
-             default( dev_packages_by_os[ ansible_distribution ] ) }}"
+dev_packages_per_os:    "{{ lookup('by_dist', 'dev_packages') }}"
+dev_packages:           "{{ dev_packages_per_os + dev_packages_by_os[ 'all' ] }}"

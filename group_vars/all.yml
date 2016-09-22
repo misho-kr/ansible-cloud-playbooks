@@ -9,9 +9,24 @@ vm_wait_for_port:           22
 
 # useful definitions ------------------------------------------
 
-local_homedir:              "{{ lookup('env','HOME') }}"
-remote_homedir:             "{{ ansible_env['HOME'] }}"
+home_dir:                   "{{ lookup('env','HOME') }}"
 current_dir:                "{{ lookup('env','PWD') }}"
 
 from_cache:                 True
 download_cache_dir:         "{{ current_dir }}/download.cache"
+
+# shell profile -----------------------------------------------
+
+shell_profile_by_os:
+  MacOSX:
+    '10.11.6':      "mac-os-profile(10.11.6)"
+    'default':      "mac-os-profile"
+  Ubuntu:
+    '16.04':        ".bashrc"
+    'default':      ".profile"
+  RHEL:
+  CentOS:
+  Fedora:           ".bashrc"
+  default:          ".bashrc"
+
+shell_profile:      "{{ lookup('by_dist', 'shell_profile') }}"

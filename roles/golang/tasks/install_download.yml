@@ -36,9 +36,9 @@
 
 # env setup -----------------------------------------------
 
-- name: update bashrc file (golang)
-  lineinfile: dest="{{ ansible_user_dir }}/.bashrc"
+- name: update profile (golang)
+  lineinfile: dest="{{ ansible_user_dir }}/{{ shell_profile }}"
               line="{{ item }}"
               state=present
               insertafter=EOF
-  with_items: "{{ bashrc_addons + bashrc_addons_go_install_dir }}"
+  with_items: "{{ profile_addons + profile_addons_go_install_dir }}"

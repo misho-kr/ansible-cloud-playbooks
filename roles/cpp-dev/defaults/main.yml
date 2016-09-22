@@ -3,12 +3,15 @@
 
 cpp_packages_by_os:
   Ubuntu:
-    '14.04':
-      - tbd
+    # '14.04':
+    #     - tbd
+    default:
+        - g++
   RHEL:
   CentOS:
   Fedora:
-      - "gcc-c++"
+    - gcc-c++
+  default:
+    - gcc-g++
 
-cpp_packages:     "{{ cpp_packages_by_os[ ansible_distribution ][ ansible_distribution_version ] |
-                        default( cpp_packages_by_os[ ansible_distribution ] ) }}"
+cpp_packages:     "{{ lookup('by_dist', 'cpp_packages') }}"

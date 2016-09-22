@@ -2,8 +2,9 @@
 rbenv_repo:                 https://github.com/rbenv/rbenv.git
 rbenv_install_repo:         https://github.com/rbenv/ruby-build.git
 
-bashrc_addons:
-  - export RECIPEPUPPY_HOSTPORT=www.recipepuppy.com:80
+profile_addons:
+  - "# ruby settings --------------------------------------------------"
+  - "#"
   - export PATH="${HOME}/.rbenv/bin:$PATH"
   - export PATH="${HOME}/.rbenv/plugins/ruby-build/bin:$PATH"
   - eval "$(rbenv init -)"

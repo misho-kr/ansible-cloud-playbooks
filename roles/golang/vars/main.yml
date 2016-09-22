@@ -1,10 +1,10 @@
 
-bashrc_addons:
+profile_addons:
   - "# golang settings ------------------------------------------------"
   - "#"
   - export GOPATH="${HOME}/go"
   - export PATH="${PATH}:${GOPATH}/bin"
   - export PATH="${PATH}:${GOROOT}/bin"
 
-bashrc_addons_go_install_dir:
+profile_addons_go_install_dir:
   - export PATH="${PATH}:{{ golang_install_dir }}/go/bin"

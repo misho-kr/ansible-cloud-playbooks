@@ -18,5 +18,4 @@ required_packages_by_os:
   Fedora:
     - unzip
 
-required_packages:     "{{ required_packages_by_os[ ansible_distribution ][ ansible_distribution_version ] |
-                  default( required_packages_by_os[ ansible_distribution ] ) }}"
+required_packages:      "{{ lookup('by_dist', 'required_packages') }}"

@@ -1,11 +1,15 @@
 ---
 # Install Ruby
 
+# Note: on some systems (Ubuntu, I am talking about you) command module
+# does not use shell profiles to update PATH and other env vars, so
+# explicit call to bash is required in order to take care of that
+
 - name: install a Ruby version (could be others)
-  command: rbenv install -v {{ ruby_version }}
+  command: rbenv install -v "{{ ruby_version }}"
 
 - name: set the global version of Ruby to use
-  command: rbenv global {{ ruby_version }}
+  command: rbenv global "{{ ruby_version }}"
 
 - name: gems should not generate local documentation (and eat space and time)
   lineinfile: dest="{{ ansible_user_dir }}/.gemrc"

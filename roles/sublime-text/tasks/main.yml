@@ -29,10 +29,10 @@
   command: mv "{{ sublime_text_dest }}/{{ sublime_text_extract_dir }}" "{{ sublime_text_dest }}/{{ sublime_text_dir }}"
   when: sublime_text_extract_dir != sublime_text_dir
 
-- name: update bashrc file (SublimeText2)
-  lineinfile: dest="{{ ansible_user_dir }}/.bashrc" line="{{ item }}"
+- name: update profile (SublimeText2)
+  lineinfile: dest="{{ ansible_user_dir }}/{{ shell_profile }}" line="{{ item }}"
               state=present insertafter=EOF
-  with_items: "{{ bashrc_addons }}"
+  with_items: "{{ profile_addons }}"
 
 - name: delete downloaded SublimeText archive file
   file: path="{{ sublime_text_download_dest }}/{{ sublime_text_name }}.tar.bz2"

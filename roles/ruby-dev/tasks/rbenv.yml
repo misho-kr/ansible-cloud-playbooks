@@ -10,9 +10,9 @@
        dest="{{ ansible_user_dir }}/.rbenv/plugins/ruby-build"
        accept_hostkey=yes
 
-- name: update bashrc file (rbenv)
-  lineinfile: dest="{{ ansible_user_dir }}/.bashrc"
+- name: update profile (rbenv)
+  lineinfile: dest="{{ ansible_user_dir }}/{{ shell_profile }}"
               line="{{ item }}"
               state=present
               insertafter=EOF
-  with_items: "{{ bashrc_addons }}"
+  with_items: "{{ profile_addons }}"
