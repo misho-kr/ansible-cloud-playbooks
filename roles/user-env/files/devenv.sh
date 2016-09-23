@@ -10,9 +10,9 @@ alias ltr='ls -ltr'
 
 # alias sv='${HOME}/bin/set_dyn_view.pl'
 
-[[ -x /usr/bin/emacs-nox ]]      && alias enox='emacs-nox'
-[[ -x /usr/bin/emacs24-nox ]]    && alias enox='emacs24-nox'
-[[ -x /usr/bin/emacs-24.3-nox ]] && alias enox='emacs-24.3-nox'
+test -x /usr/bin/emacs-nox       && alias enox='emacs-nox'
+test -x /usr/bin/emacs24-nox     && alias enox='emacs24-nox'
+test -x /usr/bin/emacs-24.3-nox  && alias enox='emacs-24.3-nox'
 
 alias e='enox'
 

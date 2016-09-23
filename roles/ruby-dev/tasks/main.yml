@@ -3,6 +3,18 @@
 
 - include: prerequisites.yml
 
+# workaround for the issue where the shell environment is not initialized
+# and as a result "rbenv" is not found in PATH
+#
+# ref: http://docs.ansible.com/ansible/intro_configuration.html
+#
+# starting in version 2.1 inventory var ansible_shell_executable
+# can be overridden
+
+- name: make shell act as a login shell
+  set_fact: ansible_shell_executable='/bin/sh -l'
+  when: "{{ ansible_distribution == 'Ubuntu'}}"
+
 - include: rbenv.yml
 - include: ruby.yml
 - include: rails.yml

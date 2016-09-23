@@ -1,9 +1,8 @@
 ---
 # Install Ruby
 
-# Note: on some systems (Ubuntu, I am talking about you) command module
-# does not use shell profiles to update PATH and other env vars, so
-# explicit call to bash is required in order to take care of that
+- name: show off the environment
+  command: env
 
 - name: install a Ruby version (could be others)
   command: rbenv install -v "{{ ruby_version }}"
