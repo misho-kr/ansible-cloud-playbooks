@@ -13,8 +13,10 @@ required_packages_by_os:
   Ubuntu:
     '14.04':
       - tbd
-  RHEL:
+  RedHat:
+    - unzip
   CentOS:
+    - unzip
   Fedora:
     - unzip
 

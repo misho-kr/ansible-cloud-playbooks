@@ -5,38 +5,38 @@
 
 - name: update all packages
   become: yes
-  dnf:  name=* state=latest
-  when: ansible_pkg_mgr == "yum" and update_all_packages
+  yum:  name=* state=latest
+  when: "{{ ansible_pkg_mgr == 'yum' and update_all_packages }}"
 
 - name: install common dev packages (yum)
   become: yes
   yum: name="{{ item }}" state=present
   with_items: "{{ dev_packages }}"
-  when: ansible_pkg_mgr == "yum"
+  when: "{{ ansible_pkg_mgr == 'yum' }}"
 
 # Fedora 23 and higher use DNF
 
 - name: update all packages
   become: yes
   dnf:  name=* state=latest
-  when: ansible_pkg_mgr == "dnf" and update_all_packages
+  when: "{{ ansible_pkg_mgr == 'dnf' and update_all_packages }}"
 
 - name: install common dev packages (dnf)
   become: yes
   dnf: name="{{ item }}" state=present
   with_items: "{{ dev_packages }}"
-  when: ansible_pkg_mgr == "dnf"
+  when: "{{ ansible_pkg_mgr == 'dnf' }}"
 
 # for Debian distros
 
 - name: upgrade all packages (apt)
   become: yes
   apt: upgrade=dist
-  when: ansible_pkg_mgr == "apt" and update_all_packages
+  when: "{{ ansible_pkg_mgr == 'apt' and update_all_packages }}"
 
 - name: install common dev packages (apt)
   become: yes
   apt: name="{{ item }}" state=present
        update_cache=yes
   with_items: "{{ dev_packages }}"
-  when: ansible_pkg_mgr == "apt"
+  when: "{{ ansible_pkg_mgr == 'apt' }}"

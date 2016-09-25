@@ -11,10 +11,24 @@ dev_packages_by_os:
         # build_tools
         # extra
         - emacs24-nox
-  RHEL:
+  RedHat:
+    # source control
+    # build_tools
+      - patch
+      - bzip2
+    # extra
+      - emacs-nox
   CentOS:
+    # source control
+    # build_tools
+      - patch
+      - bzip2
+    # extra
+      - emacs-nox
   Fedora:
     # source control
+      - gitk
+      - git-gui
     # build_tools
       - patch
       - bzip2
@@ -23,8 +37,6 @@ dev_packages_by_os:
   all:
     # source control
       - git
-      - gitk
-      - git-gui
     # build_tools
       - make
     # extra

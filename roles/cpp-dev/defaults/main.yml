@@ -3,15 +3,12 @@
 
 cpp_packages_by_os:
   Ubuntu:
-    # '14.04':
-    #     - tbd
-    default:
-        - g++
-  RHEL:
-  CentOS:
+    - g++
+#  RedHat:
+#  CentOS:
   Fedora:
-    - gcc-c++
-  default:
     - gcc-g++
+  default:
+    - gcc-c++
 
 cpp_packages:     "{{ lookup('by_dist', 'cpp_packages') }}"

@@ -13,12 +13,18 @@ ruby_dep_packages_by_os:
       - libreadline-dev
       - libsqlite3-dev
       - zlib1g-dev
-  RHEL:
-  CentOS:
+    default:  []
+  RedHat:
+    - openssl-devel
+    - readline-devel
+    - sqlite-devel
+    - zlib-devel
+  CentOS:   []
   Fedora:
     - openssl-devel
     - readline-devel
     - sqlite-devel
     - zlib-devel
+  default:  []
 
 ruby_dep_packages:      "{{ lookup('by_dist', 'ruby_dep_packages') }}"

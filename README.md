@@ -37,19 +37,21 @@ PLAY RECAP *********************************************************************
 localhost                  : ok=10   changed=1    unreachable=0    failed=0
 ```
 
-Optional arguments -- defined in the __vars__ section of the playbook, or passed to the playbook on the command line:
+#### Optional arguments
+
+Defined in the __vars__ section of the playbook, or passed to the playbook on the command line:
 
 * __cloud__ -- cloud provider to use, initially only _aws_ is supported
-* __vm_count__ -- number of VMs to create
+* __vm_count__ -- number of VMs to create, default to 1
 
 ```bash
-$ ansible-playbook cloud.yml -e vm_count=3 -e cloud=gce"
+$ ansible-playbook cloud.yml -e vm_count=3 -e cloud=gce
 ```
 
 ### Playbook actions
 
 * Queries the selected cloud provider to get current list of VMs
-* Creates VMs as necessary (or destroys) and adds them to the inventory under the __cloud__ group
+* Creates VMs (or destroys) as necessary and updates the inventory under the __cloud__ group
 * Genereates static inventory file
 * Checks connectivity to each VM
 

@@ -12,10 +12,10 @@ sublime_dep_packages_by_os:
     # '14.04':
     'default':
         - libgtk2.0-0
-  RHEL:
-  CentOS:
+  # RedHat:
+  # CentOS:
   Fedora:
       - gtk3
-  all:              []
+  default:   []
 
 sublime_dep_packages:     "{{ lookup('by_dist', 'sublime_dep_packages') }}"

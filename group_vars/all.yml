@@ -22,7 +22,7 @@ shell_profile_by_os:
   Ubuntu:
     '16.04':        ".bashrc"
     'default':      ".profile"
-  RHEL:
+  RHEL:             ".bash_profile"
   CentOS:
   Fedora:           ".bashrc"
   default:          ".bashrc"

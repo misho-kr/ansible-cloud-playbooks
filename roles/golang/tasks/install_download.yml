@@ -9,11 +9,11 @@
                 name="{{ download_cache_dir }}"
                 state=directory
 
-- name: download and cache Golang distribution file
-  run_once: true
-  local_action: get_url
-                url="{{ golang_package_url }}"
-                dest="{{ download_cache_dir }}"
+# - name: download and cache Golang distribution file
+#   run_once: true
+#   local_action: get_url
+#                 url="{{ golang_package_url }}"
+#                 dest="{{ download_cache_dir }}"
 
 - name: get filename of Golang distribution file
   set_fact:

@@ -23,7 +23,7 @@ count = {{ vm_count|int }}
 # User defined virtual manchine tags
 #
 {% for tag in vm_tags %}
-{{ tag }}="{{ vm_tags[ tag ] }}"
+{{ tag }} = "{{ vm_tags[ tag ] }}"
 {% endfor %}
 
 # alias ---------------------------------------------------------------
