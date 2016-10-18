@@ -1,0 +1,28 @@
+---
+# Install CPP packages
+
+- set_fact:
+    extra_packages:   "{{ cpp_extra_packages[ extra ] | default([]) }}"
+
+- name: install packages for C++ development (yum)
+  become: yes
+  yum: name="{{ item }}" state=present
+  with_items: "{{ cpp_packages + extra_packages }}"
+  when: ansible_pkg_mgr == "yum"
+
+# Fedora 23 and higher use DNF
+
+- name: install packages for C++ development (dnf)
+  become: yes
+  dnf: name="{{ item }}" state=present
+  with_items: "{{ cpp_packages + extra_packages }}"
+  when: ansible_pkg_mgr == "dnf"
+
+# for Debian distros
+
+- name: install packages for C++ development (apt)
+  become: yes
+  apt: name="{{ item }}" state=present
+       update_cache=yes
+  with_items: "{{ cpp_packages + extra_packages }}"
+  when: ansible_pkg_mgr == "apt"

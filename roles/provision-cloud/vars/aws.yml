@@ -12,16 +12,16 @@ aws_keypair:                "Misho's public key"
 aws_vpc_subnet:             subnet-c8b90aac
 
 # Fedora-Cloud-Base-24-20160922.0.x86_64-us-west-2-HVM-gp2-0
-# ec2_image:                  ami-5f04d83f
-# ec2_user:                   fedora
+ec2_image:                  ami-5f04d83f
+ec2_user:                   fedora
 
 # Ubuntu Server 14.04 LTS (HVM), SSD Volume Type - ami-d732f0b7
 # ec2_image:                  ami-d732f0b7
 # ec2_user:                   ubuntu
 
 # Red Hat Enterprise Linux 7.2 (HVM), SSD Volume Type - ami-775e4f16
-ec2_image:                  ami-775e4f16
-ec2_user:                   ec2-user
+# ec2_image:                  ami-775e4f16
+# ec2_user:                   ec2-user
 
 ec2_security_group:         default
 ec2_instance_type:          t2.micro

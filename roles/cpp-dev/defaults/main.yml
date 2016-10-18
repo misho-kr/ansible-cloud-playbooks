@@ -7,8 +7,33 @@ cpp_packages_by_os:
 #  RedHat:
 #  CentOS:
   Fedora:
-    - gcc-g++
+    - gcc-c++
   default:
     - gcc-c++
 
-cpp_packages:     "{{ lookup('by_dist', 'cpp_packages') }}"
+cpp_packages:           "{{ lookup('by_dist', 'cpp_packages') }}"
+
+# packages for OpemMPI ----------------------------------------
+
+openmpi_ld_path_by_os:
+  Ubuntu:       "/usr/lib64/openmpi/lib"
+  RedHat:       "/usr/lib64/openmpi/lib"
+  CentOS:       "/usr/lib64/openmpi/lib"
+  Fedora:       "/usr/lib64/openmpi/lib"
+  default:      ""
+
+cpp_openmpi_packages_by_os:
+  Ubuntu:       ["openmpi", "openmpi-dev"]
+  RedHat:       ["openmpi", "openmpi-devel"]
+  CentOS:       ["openmpi", "openmpi-devel"]
+  Fedora:       ["openmpi", "openmpi-devel"]
+  default:      []
+
+cpp_openmpi_packages:   "{{ lookup('by_dist', 'cpp_openmpi_packages') }}"
+openmpi_ld_path:        "{{ lookup('by_dist', 'openmpi_ld_path') }}"
+
+# extra packages ----------------------------------------------
+
+cpp_extra_packages:
+    openmpi:    "{{ cpp_openmpi_packages }}"
+

@@ -1,0 +1,5 @@
+
+profile_addons:
+  - "# OpenMPI settings --------------------------------------------------"
+  - "#"
+  - export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:{{ openmpi_ld_path }}"
