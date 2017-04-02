@@ -1,5 +1,6 @@
 {
-  "node_name":              "serf@{{ ansible_fqdn }}",
+  "node_name":              "{{ ansible_fqdn }}",
+  "advertise":              "{{ ansible_fqdn }}",
   "log_level":              "{{ serf_log_level }}",
   "leave_on_terminate":     true,
   "start_join":             [

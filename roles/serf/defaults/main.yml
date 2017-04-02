@@ -1,23 +1,41 @@
 ---
 
 service_name:       "serf"
+
 install_dir:        "/usr/local/bin"
 serf_log_level:     "info"
 
 cluster_name:       "ansible"
 
-package_url:        "https://releases.hashicorp.com/serf/0.7.0/serf_0.7.0_linux_amd64.zip"
-
-# required minimal set of tools (in the future it may expand)
+# required minimal set of tools
 required_packages_by_os:
   Ubuntu:
     '14.04':
-      - tbd
+      - unzip
   RedHat:
     - unzip
   CentOS:
     - unzip
   Fedora:
     - unzip
+  default:  []
 
-required_packages:      "{{ lookup('by_dist', 'required_packages') }}"
+required_packages:          "{{ lookup('by_dist', 'required_packages') }}"
+
+# download params -----------------------------------------------------
+
+serf_version:               "0.8.1"
+serf_download_from:         local
+
+## match cpu arch to hashi naming convention
+hashicorp_architecture_map:
+  x86_64:   amd64
+  armv7l:   arm
+  aarch64:  arm64
+
+serf_architecture:          "{{ hashicorp_architecture_map[ ansible_architecture ] }}"
+
+hashicorp_download_url:     "https://releases.hashicorp.com"
+
+serf_zip_url:               "{{ hashicorp_download_url }}/serf/{{ serf_version }}/serf_{{ serf_version }}_linux_{{ serf_architecture }}.zip"
+serf_checksum_file_url:     "{{ hashicorp_download_url }}/serf/{{ serf_version }}/serf_{{ serf_version }}_SHA256SUMS"

@@ -40,7 +40,7 @@
     - { role: sublime-text,     when: install == "sublime" }
     - { role: cpp-dev,          when: install == "cpp"     }
     - { role: ruby-dev,         when: install == "ruby"    }
-    - { role: golang,           when: install == "go"      }
+    - { role: golang,           when: install == "go" or install == "golang" }
 
 # ---------------------------------------------------------------------
 # eof

@@ -1,22 +1,20 @@
 ---
-# Deploy systemd service
+# Deploy upstart service
 
 - name: install service configuration files
   template: src="{{ item.src }}"
             dest="{{ item.dest }}"
             owner=root group=root mode="u=rw,g=r,o=r"
   with_items:
-    - { src: "{{ service_name }}-config.j2",      dest: "/etc/sysconfig/{{ service_name }}"       }
-    - { src: "{{ service_name }}-config-json.j2", dest: "/etc/sysconfig/{{ service_name }}.json"  }
+    - { src: "{{ service_name }}-config.j2",      dest: "/etc/default/{{ service_name }}"       }
+    - { src: "{{ service_name }}-config-json.j2", dest: "/etc/default/{{ service_name }}.json"  }
   notify:
     - restart {{ service_name }}
 
 - name: install service management file
-  become: yes
-  template: src="{{ service_name }}-service.j2"
-            dest="/lib/systemd/system/{{ service_name }}.service"
+  template: src="{{ service_name }}-upstart.j2"
+            dest="/etc/init/{{ service_name }}.conf"
             owner=root group=root mode="u=rw,g=r,o=r"
   notify:
-    - reload systemd
     - enable {{ service_name }}
     - restart {{ service_name }}

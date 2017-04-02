@@ -1,0 +1,14 @@
+---
+# Download file remotely, and transfer to local
+
+- name: download file remotely
+  run_once: true
+  get_url: url="{{ url }}" dest="./{{ dest | basename }}" checksum="{{ checksum | default(omit) }}"
+
+- name: transfer file to local machine
+  run_once: true
+  fetch: src="{{ dest | basename }}" dest="{{ dest }}" flat=yes fail_on_missing=yes
+
+- name: clean up file on remote site
+  run_once: true
+  file: path="{{ dest | basename }}" state=absent

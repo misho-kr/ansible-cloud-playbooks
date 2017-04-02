@@ -1,0 +1,7 @@
+---
+# Download file locally
+
+- name: download file locally
+  connection: local
+  run_once: true
+  get_url: url="{{ url }}" dest="{{ dest }}" checksum="{{ checksum | default(omit) }}"

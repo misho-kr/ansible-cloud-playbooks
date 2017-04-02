@@ -1,0 +1,58 @@
+---
+# Package download tasks for Serf
+
+- name: create cache folder
+  run_once: true
+  local_action: file
+                name="{{ download_cache_dir }}"
+                state=directory
+
+- set_fact:
+    serf_checksum:    "{{ serf_checksum_file_url | basename }}"
+    serf_pkg:         "{{ serf_zip_url | basename }}"
+
+# serf package checksum -------------------------------------
+
+- name: check serf package checksum file
+  connection: local
+  stat: path="{{ download_cache_dir }}/{{ serf_checksum }}"
+  register: serf_checksum_path
+
+- include: download_local.yml \
+    url="{{ serf_checksum_file_url }}" \
+    dest="{{ download_cache_dir }}/{{ serf_checksum }}"
+  when: not serf_checksum_path.stat.exists and serf_download_from == "local"
+
+- include: download_remote.yml \
+    url="{{ serf_checksum_file_url }}" \
+    dest="{{ download_cache_dir }}/{{ serf_checksum }}"
+  when: not serf_checksum_path.stat.exists and serf_download_from != "local"
+
+- name: get serf package checksum
+  connection: local
+  run_once: true
+  shell: "grep {{ serf_pkg }} {{ download_cache_dir }}/{{ serf_checksum }}"
+  register: serf_sha256
+
+- set_fact:
+    serf_sha256:    "sha256:{{ serf_sha256.stdout.split(' ') | first }}"
+
+# serf package ----------------------------------------------
+
+- name: Check serf package file
+  connection: local
+  run_once: true
+  stat: path="{{ download_cache_dir }}/{{ serf_pkg }}"
+  register: serf_pkg_path
+
+- include: download_local.yml \
+    url="{{ serf_zip_url }}" \
+    dest="{{ download_cache_dir }}/{{ serf_pkg }}" \
+    checksum="{{ serf_sha256 }}"
+  when: not serf_pkg_path.stat.exists and serf_download_from == "local"
+
+- include: download_remote.yml \
+    url="{{ serf_zip_url }}" \
+    dest="{{ download_cache_dir }}/{{ serf_pkg }}" \
+    checksum="{{ serf_sha256 }}"
+  when: not serf_pkg_path.stat.exists and serf_download_from != "local"
