@@ -9,6 +9,7 @@
                 name="{{ download_cache_dir }}"
                 state=directory
 
+# PayPal shenanigans
 # - name: download and cache Golang distribution file
 #   run_once: true
 #   local_action: get_url

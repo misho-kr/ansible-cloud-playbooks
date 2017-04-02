@@ -11,12 +11,16 @@ aws_region:                 us-west-2
 aws_keypair:                "Misho's public key"
 aws_vpc_subnet:             subnet-c8b90aac
 
-# Fedora-Cloud-Base-24-20160922.0.x86_64-us-west-2-HVM-gp2-0
-ec2_image:                  ami-5f04d83f
+# Fedora-Cloud-Base-25-20170103.1.x86_64-us-west-2-HVM-gp2-0
+ec2_image:                  ami-cea515ae
 ec2_user:                   fedora
 
 # Ubuntu Server 14.04 LTS (HVM), SSD Volume Type - ami-d732f0b7
 # ec2_image:                  ami-d732f0b7
+# ec2_user:                   ubuntu
+
+# ubuntu-xenial-16.04-testing-amd64-server-20170103
+# ec2_image:                  ami-03a01063
 # ec2_user:                   ubuntu
 
 # Red Hat Enterprise Linux 7.2 (HVM), SSD Volume Type - ami-775e4f16

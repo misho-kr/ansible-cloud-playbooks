@@ -36,4 +36,6 @@ openmpi_ld_path:        "{{ lookup('by_dist', 'openmpi_ld_path') }}"
 
 cpp_extra_packages:
     openmpi:    "{{ cpp_openmpi_packages }}"
+    none:       []
 
+extra:          "none"

@@ -2,7 +2,7 @@
 # List fo packages to install on dev machines
 
 # update all installed packages before proceeding to the dev packages
-update_all_packages:    True
+update_all_packages:    False
 
 dev_packages_by_os:
   Ubuntu:
@@ -10,6 +10,8 @@ dev_packages_by_os:
         # source control
         # build_tools
         # extra
+        - emacs24-nox
+    default:
         - emacs24-nox
   RedHat:
     # source control
