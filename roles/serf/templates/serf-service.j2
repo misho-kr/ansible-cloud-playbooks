@@ -3,16 +3,16 @@ Description=Serf agent
 Documentation=https://www.serf.io/docs/index.html
 ConditionPathExists={{ install_dir }}/{{ service_name }}
 After=network.target
-Requires=network.service
+# Requires=network.service
 
 [Service]
 TimeoutStartSec=3
-ExecStart={{ install_dir }}/{{ service_name }} agent -config-file "/etc/sysconfig/{{ service_name }}.json"
+Environment=SERF_NODENAME={{ ansible_fqdn }}
+ExecStart={{ install_dir }}/{{ service_name }} agent -config-file {{ sysconfig_dir }}/{{ service_name }}.json
 ExecStop={{ install_dir }}/{{ service_name }} leave
 KillMode=process
-EnvironmentFile=/etc/sysconfig/{{ service_name }}
-User=nobody
-Group=nobody
+User={{ serf_username }}
+Group={{ serf_groupname }}
 
 [Install]
 WantedBy=multi-user.target

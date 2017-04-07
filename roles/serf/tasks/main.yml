@@ -17,6 +17,10 @@
   notify:
     - restart {{ service_name }}
 
+# configuration -------------------------------------------------------
+
+- include: encryption.yml
+
 # create service ------------------------------------------------------
 
 - include: service_systemd.yml

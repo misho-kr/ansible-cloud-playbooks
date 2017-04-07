@@ -1,0 +1,74 @@
+---
+# Encryption key for inter-agent communication
+
+- name: folder for encryption key
+  run_once: yes
+  local_action: file name="{{ current_dir }}/files" state=directory
+
+# option 1: read from var -------------------------------------
+
+- name: save encryption key to (local) file
+  run_once: yes
+  local_action: copy content="{{ encryption_key }}" dest="{{ current_dir }}/files/serf.key"
+  when: "{{ encryption_key is defined }}"
+
+# option 2: read from file ------------------------------------
+
+- name: search for file with encryption key
+  run_once: yes
+  local_action: copy src="{{ encryption_key_file }}" dest="{{ current_dir }}/files/serf.key"
+  when: "{{ encryption_key is not defined and encryption_key_file is defined }}"
+
+# option 3: read from pre-existing deployment -----------------
+
+- block:
+    - name: test if configuation file already exist
+      stat: path="/etc/default/{{ service_name }}.json"
+      register: is_config_exist
+
+    - name: recover existing encryption key, read from config
+      slurp: src="/etc/default/{{ service_name }}.json"
+      register: serf_config_b64
+      when: "{{ is_config_exist.stat.exists }}"
+
+    - name: recover existing encryption key, convert to json
+      set_fact:
+        serf_config: "{{ serf_config_b64.content | b64decode | from_json }}"
+      when: "{{ serf_config_b64.content is defined }}"
+
+    - name: recover existing encryption key, save to file
+      local_action: copy content="{{ serf_config }}" dest="{{ current_dir }}/files/serf.key" force=no
+      when: "{{ serf_config is defined }}"
+
+  when: "{{ encryption_key is not defined and encryption_key_file is not defined }}"
+
+# option 4: generate ------------------------------------------
+
+- name: check if encryption key is available already
+  local_action: stat path="{{ current_dir }}/files/serf.key"
+  register: is_encription_key
+
+- block:
+
+    - name: generate new encryption key
+      command: "{{ install_dir }}/serf keygen"
+      register: new_encryption_key
+
+    - name: recover existing encryption key, save to file
+      local_action: copy content="{{ new_encryption_key.stdout }}"
+                         dest="{{ current_dir }}/files/serf.key"
+                         force=no
+
+  when: "{{ not is_encription_key.stat.exists }}"
+
+# load up -----------------------------------------------------
+
+- name: load encryption key into variable
+  set_fact:
+    serf_encryption_key:    "{{ lookup('file', current_dir + '/files/serf.key' ) }}"
+
+# cleanup -----------------------------------------------------
+
+- name: remove temp encryption key file
+  run_once: yes
+  local_action: file name="{{ current_dir }}/files/serf.key" state=absent

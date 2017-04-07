@@ -9,8 +9,8 @@ respawn
 env appname="{{ service_name }}"
 
 env PIDFILE="/var/run/{{ service_name }}.pid"
-env USER=nobody
-env GROUP=daemon
+env USER="{{ serf_username }}"
+env GROUP="{{ serf_groupname }}"
 
 script
     . /etc/default/${appname}
@@ -19,7 +19,7 @@ script
     exec start-stop-daemon --start              \
         --make-pidfile --pidfile "${PIDFILE}"   \
         --chuid $USER --group $GROUP            \
-        --exec {{ install_dir }}/${appname} -- agent -config-file "/etc/default/{{ service_name }}.json"
+        --exec {{ install_dir }}/${appname} -- agent -config-file /etc/default/{{ service_name }}.json
 end script
 
 pre-stop script

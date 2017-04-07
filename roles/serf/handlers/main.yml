@@ -2,7 +2,7 @@
 
 - name: reload systemd
   become: yes
-  command: /usr/bin/systemctl --system daemon-reload
+  command: systemctl --system daemon-reload
 
 - name: enable {{ service_name }}
   become: yes

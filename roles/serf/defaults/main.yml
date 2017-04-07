@@ -1,26 +1,52 @@
 ---
 
+# useful definitions ------------------------------------------
+
+home_dir:           "{{ lookup('env','HOME') }}"
+current_dir:        "{{ lookup('env','PWD') }}"
+
 service_name:       "serf"
 
 install_dir:        "/usr/local/bin"
 serf_log_level:     "info"
 
-cluster_name:       "ansible"
+cluster_name:       "ansible-serf"
+
+# source of the encryption key can be:
+#   - provided directly in <var.yml> file
+#   - stored in flat file under files/
+#   - generated during deployment
+
+# encryption_key:         "..."
+# encryption_key_file:    "serf-encryption.key"
 
 # required minimal set of tools
 required_packages_by_os:
-  Ubuntu:
-    '14.04':
-      - unzip
-  RedHat:
+  # Ubuntu:
+  #   default:
+  #     - unzip
+  # RedHat:
+  #   - unzip
+  # CentOS:
+  #   - unzip
+  # Fedora:
+  #   - unzip
+  default:
     - unzip
-  CentOS:
-    - unzip
-  Fedora:
-    - unzip
-  default:  []
 
 required_packages:          "{{ lookup('by_dist', 'required_packages') }}"
+
+sysconfig_dir_by_os:
+  default:      "/etc/sysconfig"
+  Ubuntu:       "/etc/default"
+  # RedHat:
+  # CentOS:
+  # Fedora:
+
+sysconfig_dir:              "{{ lookup('by_dist', 'sysconfig_dir') }}"
+
+serf_username:              serf
+serf_groupname:             daemon
 
 # download params -----------------------------------------------------
 

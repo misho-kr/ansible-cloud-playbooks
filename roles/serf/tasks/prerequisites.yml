@@ -22,3 +22,10 @@
        update_cache=yes
   with_items: "{{ required_packages }}"
   when: ansible_pkg_mgr == "apt"
+
+# user/group --------------------------------------------------
+
+- name: create user to run serf
+  user: name="{{ serf_username }}" group="{{ serf_groupname }}"
+        createhome=no password="none"
+        comment="dedicated user account to run serf agent"
