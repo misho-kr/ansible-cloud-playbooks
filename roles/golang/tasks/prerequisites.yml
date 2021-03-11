@@ -5,23 +5,20 @@
 
 - name: install required packages (yum)
   become: yes
-  yum: name="{{ item }}" state=present
-  with_items: "{{ required_packages }}"
-  when: "{{ ansible_pkg_mgr == 'yum' }}"
+  yum: name="{{ required_packages }}" state=present
+  when: ansible_pkg_mgr == 'yum'
 
 # Fedora 23 and higher use DNF
 
 - name: install required packages (dnf)
   become: yes
-  dnf: name="{{ item }}" state=present
-  with_items: "{{ required_packages }}"
-  when: "{{ ansible_pkg_mgr == 'dnf' }}"
+  dnf: name="{{ required_packages }}" state=present
+  when: ansible_pkg_mgr == 'dnf'
 
 # for Debian distros
 
 - name: install required packages (apt)
   become: yes
-  apt: name="{{ item }}" state=present
+  apt: name="{{ required_packages }}" state=present
        update_cache=yes
-  with_items: "{{ required_packages }}"
-  when: "{{ ansible_pkg_mgr == 'apt' }}"
+  when: ansible_pkg_mgr == 'apt'

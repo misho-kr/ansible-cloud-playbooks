@@ -1,0 +1,20 @@
+---
+
+# Most Linux distros in the RedHat family use YUM
+
+- name: install common dev packages (yum)
+  yum: name="{{ item }}" state=present name="{{ dev_packages }}"
+  when: ansible_pkg_mgr == 'yum'
+
+# Fedora 23 and higher use DNF
+
+- name: install common dev packages (dnf)
+  dnf: name="{{ item }}" state=present name="{{ dev_packages }}"
+  when: ansible_pkg_mgr == 'dnf'
+
+# for Debian distros
+
+- name: install common dev packages (apt)
+  apt: name="{{ item }}" state=present name="{{ dev_packages }}"
+       update_cache=yes
+  when: ansible_pkg_mgr == 'apt'

@@ -1,0 +1,6 @@
+---
+
+install_sublime:  false
+install_cpp:      false
+install_ruby:     false
+install_go:       true

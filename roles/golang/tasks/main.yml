@@ -1,10 +1,24 @@
 ---
+# Software packages to install for Go development
 
 - include: install_download.yml
-  when: "{{ golang_install_from == 'download' }}"
+  when: golang_install_from == 'download'
 
 - include: install_repo.yml
-  when: "{{ golang_install_from == 'repo' }}"
+  when: golang_install_from == 'repo'
 
 - fail: msg="invalid setting for golang installation source"
-  when: "{{ golang_install_from != 'repo' and golang_install_from != 'download' }}"
+  when: golang_install_from != 'repo' and golang_install_from != 'download'
+
+# env setup -----------------------------------------------
+
+- set_fact:
+    profile_addons: "{{ profile_addons + profile_addons_go_install_dir }}"
+  when: golang_install_from == 'download'
+
+- name: update profile (golang)
+  lineinfile: dest="{{ ansible_user_dir }}/{{ shell_profile }}"
+              line="{{ item }}"
+              state=present
+              insertafter=EOF
+  with_items: "{{ profile_addons }}"

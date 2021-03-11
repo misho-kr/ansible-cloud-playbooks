@@ -1,55 +1,22 @@
 ---
-# Software packages to install for Go development
 
-golang_install_from_by_os:
-  # Ubuntu:
-  RedHat:       download
-  # CentOS:
-  # Fedora:
-  default:      repo
+golang_install_from:        "download"
+# golang_install_from:        "repo"
 
-golang_install_from:        "{{ lookup('by_dist', 'golang_install_from') }}"
+# installation from download site
+# golang_download_url:       "https://storage.googleapis.com/golang/go1.16.1.linux-amd64.tar.gz"
+golang_latest_version_url:  "https://golang.org/VERSION?m=text"
 
-# -------------------------------------------------------------
-# 1) when installing from tarball
+golang_package_url:         "https://storage.googleapis.com/golang"
+golang_package_version:     "auto"
+golang_package_arch:        "amd64"
+golang_package_os:          "linux"
 
-golang_package_url:         "https://storage.googleapis.com/golang/go1.8.linux-amd64.tar.gz"
 golang_install_dir:         "/usr/local"
 
-# -------------------------------------------------------------
-# 2) when installing from repo
+# installation from repo
+# golang_repo:
+golang_packages:
+  - golang
 
-golang_packages_by_os:
-  Ubuntu:
-      - golang
-  # RedHat:
-  # CentOS:
-  # Fedora:
-  default:
-      - golang
-
-golang_packages:  "{{ lookup('by_dist', 'golang_packages') }}"
-
-# -------------------------------------------------------------
-# 2B) when installing from custom repo
-
-golang_repo_by_os:
-  Ubuntu:
-    '14.04':      "ppa:ubuntu-lxc/lxd-stable"
-    'default':
-  RedHat:
-  CentOS:
-  Fedora:
-
-golang_repo:      "{{ lookup('by_dist', 'golang_repo') }}"
-
-# required minimal set of tools (in the future it may expand)
-required_packages_by_os:
-  Ubuntu:
-    - unzip
-  RedHat:     []
-  CentOS:     []
-  Fedora:
-    - unzip
-
-required_packages:  "{{ lookup('by_dist', 'required_packages') }}"
+required_packages:

@@ -1,13 +1,13 @@
-Create virtual machines in the clouds with [Ansible](https://docs.ansible.com/playbooks.html)
-=============================================================================================
+Create cloud virtual machines with [Ansible](https://docs.ansible.com/playbooks.html)
+============================================
 
-No need for provider-specific UIs or command-line tools:
+Pure Ansible playbooks, no need for cloud provider-specific UIs or command-line tools:
 
 1. Use one of the ready-to-use playbooks or create new one from template
 1. Set the cloud provider and desired number of virtual machines (otional)
 1. Run the playbook
 
-Plenty of customization options. Supported cloud providers: [aws](https://aws.amazon.com), [gce](https://cloud.google.com) (work in progress).
+Supported cloud providers: [aws](https://aws.amazon.com), [gce](https://cloud.google.com) (work in progress).
 
 There are other cloud provisioning solutions, like [Teraform](https://www.terraform.io). This is my experiment with [Ansible cloud modules](http://docs.ansible.com/ansible/list_of_cloud_modules.html).
 
@@ -17,29 +17,9 @@ There are other cloud provisioning solutions, like [Teraform](https://www.terraf
 * [Dev Machine](dev-machine.yml) / [docs](docs/dev-machine.md) -- software development environment (c++, ruby, etc.)
 * [Serf](serf.yml) / [docs](docs/serf.md) -- cluster of [Serf agents](https://www.serf.io/docs/index.html)
 
-### Playbook execution
+#### Configuration
 
-```bash
-$ ansible-playbook cloud.yml
-
-PLAY [localhost] ***************************************************************
-
-TASK [provision-cloud : include_vars] ******************************************
-ok: [localhost]
-
-...
-
-TASK [ping] ********************************************************************
-ok: [10.179.131.227]
-
-PLAY RECAP *********************************************************************
-10.179.131.227             : ok=4    changed=0    unreachable=0    failed=0
-localhost                  : ok=10   changed=1    unreachable=0    failed=0
-```
-
-#### Optional arguments
-
-Defined in the __vars__ section of the playbook, or passed to the playbook on the command line:
+Parameters that can be defined in the __vars__ section of the playbook, or passed as command line arguments:
 
 * __cloud__ -- cloud provider to use, initially only _aws_ is supported
 * __vm_count__ -- number of VMs to create, default to 1
@@ -71,4 +51,4 @@ Provisioning cloud infrastructure requires credentials to be passed to the playb
 
 ### Limitation
 
-You can not create VMs on multiple could providers in the same playbook execution. But you can run the playbook multiple times, each time with different __cloud__ parameter.
+Can not create VMs on multiple could providers in the same playbook execution. Instead run the playbook multiple times, each time with different __cloud__ parameter.

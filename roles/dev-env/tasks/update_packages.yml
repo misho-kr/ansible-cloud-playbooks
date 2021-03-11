@@ -1,0 +1,19 @@
+---
+
+# Most Linux distros in the RedHat family use YUM
+
+- name: update all packages (yum)
+  yum:  name=* state=latest
+  when: ansible_pkg_mgr == 'yum' and update_all_packages|bool
+
+# Fedora 23 and higher use DNF
+
+- name: update all packages (dnf)
+  dnf:  name=* state=latest
+  when: ansible_pkg_mgr == 'dnf' and update_all_packages|bool
+
+# for Debian distros
+
+- name: upgrade all packages (apt)
+  apt: upgrade=dist
+  when: ansible_pkg_mgr == 'apt' and update_all_packages|bool

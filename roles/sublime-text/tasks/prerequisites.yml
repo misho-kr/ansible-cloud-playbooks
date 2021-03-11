@@ -4,23 +4,20 @@
 
 - name: install SublimeText required packages (yum)
   become: yes
-  yum: name="{{ item }}" state=present
-  with_items: "{{ sublime_dep_packages }}"
+  yum: name="{{ item }}" state=present name="{{ sublime_dep_packages }}"
   when: ansible_pkg_mgr == "yum"
 
 # Fedora 23 and higher use DNF
 
 - name: install SublimeText required packages (dnf)
   become: yes
-  dnf: name="{{ item }}" state=present
-  with_items: "{{ sublime_dep_packages }}"
+  dnf: name="{{ item }}" state=present name="{{ sublime_dep_packages }}"
   when: ansible_pkg_mgr == "dnf"
 
 # for Debian distros
 
 - name: install SublimeText required packages (apt)
   become: yes
-  apt: name="{{ item }}" state=present
+  apt: name="{{ item }}" state=present name="{{ sublime_dep_packages }}"
        update_cache=yes
-  with_items: "{{ sublime_dep_packages }}"
   when: ansible_pkg_mgr == "apt"

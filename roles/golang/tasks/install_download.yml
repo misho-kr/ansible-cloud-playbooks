@@ -1,24 +1,57 @@
 ---
 
 # -------------------------------------------------------------
+#  Prepare to download
+# -------------------------------------------------------------
+
+- block:
+
+  - name: query for latest Go version
+    run_once: true
+    local_action: uri
+      url="{{ golang_latest_version_url }}"
+      return_content=yes
+    register: latest_go_version
+    when: golang_package_version == "auto"
+
+  - name: set golang version to latest
+    set_fact:
+      golang_package_version: "{{ latest_go_version.content }}"
+  
+  when: golang_package_version == "auto"
+
+- name: prepare go package download url
+  set_fact:
+    golang_download_url: "{{ golang_package_url }}/{{ golang_package_version }}.{{ golang_package_os }}-{{ golang_package_arch }}.tar.gz"
+  when: golang_download_url is not defined or golang_download_url == ""
+
+- name: get filename of Golang distribution file
+  set_fact:
+    golang_package_file: "{{ golang_download_url | basename }}"
+
+# -------------------------------------------------------------
 #  Download
 # -------------------------------------------------------------
 
-- name: create cache folder
+- debug: var=golang_download_url
+
+- name: create local download folder
   local_action: file
                 name="{{ download_cache_dir }}"
                 state=directory
 
-# PayPal shenanigans
-# - name: download and cache Golang distribution file
-#   run_once: true
-#   local_action: get_url
-#                 url="{{ golang_package_url }}"
-#                 dest="{{ download_cache_dir }}"
+- name: check if Go distribution file was already downloaded
+  run_once: true
+  local_action: stat
+                path="{{ download_cache_dir }}/{{ golang_package_file }}"
+  register: downloaded_file
 
-- name: get filename of Golang distribution file
-  set_fact:
-    golang_packafe_file: "{{ golang_package_url | basename }}"
+- name: download Go distribution file
+  run_once: true
+  local_action: get_url
+                url="{{ golang_download_url }}"
+                dest="{{ download_cache_dir }}"
+  when: not downloaded_file.stat.exists
 
 # -------------------------------------------------------------
 #  Install
@@ -30,16 +63,7 @@
 
 - name: install Golang from distribution file
   become: yes
-  unarchive: src="{{ download_cache_dir }}/{{ golang_packafe_file }}"
+  unarchive: src="{{ download_cache_dir }}/{{ golang_package_file }}"
              dest="{{ golang_install_dir }}"
              creates="{{ golang_install_dir }}/go"
              keep_newer=True
-
-# env setup -----------------------------------------------
-
-- name: update profile (golang)
-  lineinfile: dest="{{ ansible_user_dir }}/{{ shell_profile }}"
-              line="{{ item }}"
-              state=present
-              insertafter=EOF
-  with_items: "{{ profile_addons + profile_addons_go_install_dir }}"

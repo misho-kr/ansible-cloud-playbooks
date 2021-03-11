@@ -6,23 +6,20 @@
 
 - name: install packages for C++ development (yum)
   become: yes
-  yum: name="{{ item }}" state=present
-  with_items: "{{ cpp_packages + cpp_extra_packages[ extra ] }}"
+  yum: name="{{ cpp_packages + cpp_extra_packages[ extra ] }}" state=present
   when: ansible_pkg_mgr == "yum"
 
 # Fedora 23 and higher use DNF
 
 - name: install packages for C++ development (dnf)
   become: yes
-  dnf: name="{{ item }}" state=present
-  with_items: "{{ cpp_packages + cpp_extra_packages[ extra ] }}"
+  dnf: name="{{ cpp_packages + cpp_extra_packages[ extra ] }}" state=present
   when: ansible_pkg_mgr == "dnf"
 
 # for Debian distros
 
 - name: install packages for C++ development (apt)
   become: yes
-  apt: name="{{ item }}" state=present
+  apt: name="{{ cpp_packages + cpp_extra_packages[ extra ] }}" state=present
        update_cache=yes
-  with_items: "{{ cpp_packages + cpp_extra_packages[ extra ] }}"
   when: ansible_pkg_mgr == "apt"

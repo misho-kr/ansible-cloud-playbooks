@@ -1,49 +1,14 @@
 ---
-# List fo packages to install on dev machines
 
 # update all installed packages before proceeding to the dev packages
-update_all_packages:    False
+update_all_packages:    true
 
-dev_packages_by_os:
-  Ubuntu:
-    '14.04':
-        # source control
-        # build_tools
-        # extra
-        - emacs24-nox
-    default:
-        - emacs24-nox
-  RedHat:
-    # source control
-    # build_tools
-      - patch
-      - bzip2
-    # extra
-      - emacs-nox
-  CentOS:
-    # source control
-    # build_tools
-      - patch
-      - bzip2
-    # extra
-      - emacs-nox
-  Fedora:
-    # source control
-      - gitk
-      - git-gui
-    # build_tools
-      - patch
-      - bzip2
-    # extra
-      - emacs-nox
-  all:
-    # source control
-      - git
-    # build_tools
-      - make
-    # extra
-      - zip
-      - unzip
-
-dev_packages_per_os:    "{{ lookup('by_dist', 'dev_packages') }}"
-dev_packages:           "{{ dev_packages_per_os + dev_packages_by_os[ 'all' ] }}"
+# packages to install on dev machines
+dev_packages:
+  # source control
+  - git
+  # build_tools
+  - make
+  # extra
+  - zip
+  - unzip
