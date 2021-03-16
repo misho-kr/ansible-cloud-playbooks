@@ -12,6 +12,8 @@ serf_log_level:     "info"
 
 cluster_name:       "ansible-serf"
 
+advertise_name:     false
+
 # source of the encryption key can be:
 #   - provided directly in <var.yml> file
 #   - stored in flat file under files/
@@ -19,22 +21,11 @@ cluster_name:       "ansible-serf"
 
 # encryption_key:         "..."
 # encryption_key_file:    "serf-encryption.key"
+reuse_encryption_key:     false
 
 # required minimal set of tools
-required_packages_by_os:
-  # Ubuntu:
-  #   default:
-  #     - unzip
-  # RedHat:
-  #   - unzip
-  # CentOS:
-  #   - unzip
-  # Fedora:
-  #   - unzip
-  default:
-    - unzip
-
-required_packages:          "{{ lookup('by_dist', 'required_packages') }}"
+required_packages:
+  - unzip
 
 sysconfig_dir_by_os:
   default:      "/etc/sysconfig"
@@ -50,7 +41,7 @@ serf_groupname:             daemon
 
 # download params -----------------------------------------------------
 
-serf_version:               "0.8.1"
+serf_version:               "0.8.2"
 serf_download_from:         local
 
 ## match cpu arch to hashi naming convention

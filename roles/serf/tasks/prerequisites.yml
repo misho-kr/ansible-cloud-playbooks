@@ -4,28 +4,25 @@
 # Most Linux distros in the RedHat family use YUM
 
 - name: install required packages (yum)
-  yum: name="{{ item }}" state=present
-  with_items: "{{ required_packages }}"
+  yum: name="{{ required_packages }}" state=present
   when: ansible_pkg_mgr == "yum"
 
 # Fedora 23 and higher use DNF
 
 - name: install required packages (dnf)
-  dnf: name="{{ item }}" state=present
-  with_items: "{{ required_packages }}"
+  dnf: name="{{ required_packages }}" state=present
   when: ansible_pkg_mgr == "dnf"
 
 # for Debian distros
 
 - name: install required packages (apt)
-  apt: name="{{ item }}" state=present
+  apt: name="{{ required_packages }}" state=present
        update_cache=yes
-  with_items: "{{ required_packages }}"
   when: ansible_pkg_mgr == "apt"
 
 # user/group --------------------------------------------------
 
 - name: create user to run serf
   user: name="{{ serf_username }}" group="{{ serf_groupname }}"
-        createhome=no password="none"
+        createhome=no password_lock=yes
         comment="dedicated user account to run serf agent"

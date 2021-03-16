@@ -1,6 +1,8 @@
 {
   "node_name":              "serf@{{ ansible_fqdn }}",
+{% if advertise_name %}
   "advertise":              "{{ ansible_fqdn }}",
+{% endif %}
   "log_level":              "{{ serf_log_level }}",
   "encrypt_key":            "{{ serf_encryption_key }}",
   "leave_on_terminate":     true,
